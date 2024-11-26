@@ -1,18 +1,14 @@
 {
   "name": "schedule_backend",
   "version": "1.0.0",
-  "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "ts-node src/index.ts",
-    "dev": "nodemon src/index.ts"
+    "dev": "nodemon ./src/index.ts"
   },
-  "keywords": [],
-  "author": "",
-  "license": "ISC",
-  "description": "",
   "dependencies": {
-    "express": "^4.21.1"
+    "envalid": "^8.0.0",
+    "express": "^4.21.1",
+    "mongoose": "^8.8.2"
   },
   "devDependencies": {
     "@types/express": "^5.0.0",
