@@ -3,20 +3,19 @@
   "version": "1.0.0",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "dev": "tsx --import @wessberg/di-compiler/loader src/index.ts"
+    "dev": "vite-node --watch src/index.ts"
   },
   "dependencies": {
-    "@wessberg/di": "^3.0.2",
     "dotenv": "^16.4.5",
     "envalid": "^8.0.0",
     "express": "^4.21.1",
-    "mongoose": "^8.8.2"
+    "mongoose": "^8.8.2",
+    "vite-node": "^2.1.6"
   },
   "devDependencies": {
     "@types/express": "^5.0.0",
     "@types/node": "^22.10.0",
-    "@wessberg/di-compiler": "^4.0.2",
-    "tsx": "^4.19.2",
+    "ts-node": "^10.9.2",
     "typescript": "^5.7.2"
   },
   "type": "module"

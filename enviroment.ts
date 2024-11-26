@@ -8,5 +8,4 @@ export const Enviroment = cleanEnv(process.env, {
   MONGO_ROOT_PASSWORD: str({ desc: "mongo password" }),
   MONGO_PORT: str({ desc: "mongo docker port" }),
   MONGO_CONNECTION_STRING: str(),
-  NODE_ENV: str({ choices: ["dev", "test", "production"] }),
 });
