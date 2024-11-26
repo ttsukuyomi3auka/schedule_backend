@@ -1,11 +1,11 @@
-import express from "express";
-import { Enviroment } from "../enviroment";
+import express, { json } from "express";
 import mongoose from "mongoose";
-const app = express();
+import appRouter from "./appRouter";
+import { Enviroment } from "../enviroment";
 
-app.get("/", (req, res) => {
-  res.send("Hello, Express!");
-});
+const app = express();
+app.use(json());
+app.use("/api", appRouter);
 
 app.listen(Enviroment.PORT, async () => {
   const mongooseConnect = await mongoose.connect(Enviroment.MONGO_CONNECTION_STRING);
