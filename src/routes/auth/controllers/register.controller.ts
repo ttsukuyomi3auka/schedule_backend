@@ -1,8 +1,7 @@
 import { Request, Response } from "express";
-import { AuthService } from "../../../core/services/auth/auth.service";
-import { AuthServiceImpl } from "../../../infrastructure/services/auth/auth.service.impl";
+import { container, DependencyKeys } from "../../../common/diContainer";
 
-const authService: AuthService = new AuthServiceImpl();
+const authService = container.get(DependencyKeys.authService);
 
 export const registerController = async (req: Request, res: Response) => {
   try {
@@ -16,11 +15,16 @@ export const registerController = async (req: Request, res: Response) => {
       groupNumber: group ?? null,
     });
     if (!newUser) {
-      return res.status(400).send("Ошибка регистрации!");
+      res.status(400).send("Ошибка регистрации!");
+      return;
     }
-
-    return res.status(201).send("Регистрация прошла успещно!");
+    res.status(201).send("Регистрация прошла успешно!");
   } catch (error) {
-    error instanceof Error ? res.status(500).json({ message: error.message }) : res.status(500);
+    if (error instanceof Error) {
+      res.status(400).json({ message: error.message });
+      return;
+    }
+    console.log(error);
+    res.status(500).send("Произошла ошибка на сервере.");
   }
 };
