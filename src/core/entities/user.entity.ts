@@ -6,5 +6,5 @@ export interface UserEntity {
   login: string;
   hasPassword: string;
   role: UserRoleEnum;
-  group?: GroupEntity;
+  groupNumber?: number;
 }

@@ -1,6 +1,4 @@
 import { Request, Response } from "express";
-import { UserService } from "../../../core/services/user/user.service";
-import { UserServiceImpl } from "../../../infrastructure/services/user/user.service.impl";
 import { AuthService } from "../../../core/services/auth/auth.service";
 import { AuthServiceImpl } from "../../../infrastructure/services/auth/auth.service.impl";
 
@@ -15,7 +13,7 @@ export const registerController = async (req: Request, res: Response) => {
       login: login,
       hasPassword: password,
       role: role,
-      group: group ?? null,
+      groupNumber: group ?? null,
     });
     if (!newUser) {
       return res.status(400).send("Ошибка регистрации!");
