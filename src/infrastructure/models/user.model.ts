@@ -10,10 +10,10 @@ export interface IUserDataBaseModel {
 }
 
 const userSchema = new Schema<IUserDataBaseModel>({
-  fullName: { type: String, required: true },
+  fullName: { type: String },
   login: { type: String, required: true, unique: true },
   hasPassword: { type: String, required: true },
-  role: { type: String, enum: Object.values(UserRoleEnum), required: true },
+  role: { type: String, enum: Object.values(UserRoleEnum), default: UserRoleEnum.STUDENT },
   groupNumber: { type: Number },
 });
 

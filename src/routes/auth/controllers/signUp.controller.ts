@@ -3,17 +3,10 @@ import { container, DependencyKeys } from "../../../common/diContainer";
 
 const authService = container.get(DependencyKeys.authService);
 
-export const registerController = async (req: Request, res: Response) => {
+export const signUpController = async (req: Request, res: Response) => {
   try {
-    const { login, password, role, fullName, group } = req.body;
-
-    const newUser = await authService.register({
-      fullName: fullName,
-      login: login,
-      hasPassword: password,
-      role: role,
-      groupNumber: group ?? null,
-    });
+    const { login, password } = req.body;
+    const newUser = await authService.signUp(login, password);
     if (!newUser) {
       res.status(400).send("Ошибка регистрации!");
       return;

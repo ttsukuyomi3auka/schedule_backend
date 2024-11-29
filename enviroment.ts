@@ -4,8 +4,8 @@ import { cleanEnv, num, str } from "envalid";
 
 export const Enviroment = cleanEnv(process.env, {
   PORT: num({ desc: "sever port" }),
-  MONGO_ROOT_USERNAME: str({ desc: "mongo user" }),
-  MONGO_ROOT_PASSWORD: str({ desc: "mongo password" }),
-  MONGO_PORT: str({ desc: "mongo docker port" }),
   MONGO_CONNECTION_STRING: str(),
+  ACCESS_TOKEN_LIFE: num({ desc: "in Seconds" }),
+  REFRESH_TOKEN_LIFE: num({ desc: "in Seconds" }),
+  SECRET_KEY: str({ desc: "key for generate token" }),
 });

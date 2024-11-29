@@ -1,8 +1,11 @@
 import express, { json } from "express";
 import mongoose from "mongoose";
-import appRouter from "./appRouter";
 import { Enviroment } from "../enviroment";
+import appRouter from "./routes/appRouter";
 
+
+
+//TODO не забыть про корсы
 const app = express();
 app.use(json());
 app.use("/api", appRouter);

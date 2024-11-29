@@ -1,6 +1,6 @@
-import { UserEntity } from "../../entities/user.entity";
+import { JWTTokens } from "../../../common/interfaces/jwt.interface";
 
 export interface AuthService {
-  register(data: UserEntity): Promise<boolean>;
-  login(login: string, password: string): Promise<string>;
+  signUp(login: string, password: string): Promise<boolean>;
+  signIn(login: string, password: string): Promise<JWTTokens>;
 }
