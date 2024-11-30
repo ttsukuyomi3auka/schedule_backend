@@ -1,7 +1,8 @@
-import { Schema, model } from "mongoose";
+import mongoose, { Schema, model } from "mongoose";
 import { UserRoleEnum } from "../../core/entities/enums/userRole.enum";
 
 export interface IUserDataBaseModel {
+  _id: mongoose.Types.ObjectId;
   fullName: string;
   login: string;
   hasPassword: string;

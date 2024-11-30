@@ -6,6 +6,12 @@ import { UserDataBaseModel } from "../../models/user.model";
 export class UserRepositoryImpl implements UserRepository {
   constructor(private userDataBaseConverter: UserDataBaseConverter) {}
 
+  async findUserById(userId: string): Promise<UserEntity | null> {
+    const userModel = await UserDataBaseModel.findOne({ _id: userId }).exec();
+    if (!userModel) return null;
+    return this.userDataBaseConverter.toEntity(userModel);
+  }
+
   async findUserByLogin(login: string): Promise<UserEntity | null> {
     const userModel = await UserDataBaseModel.findOne({ login }).exec();
     if (!userModel) return null;

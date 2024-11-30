@@ -9,6 +9,7 @@ export class UserServiceImpl implements UserService {
       login: "",
       hasPassword: "",
       role: UserRoleEnum.TEACHER,
+      userId: "",
     };
     return entity;
   }

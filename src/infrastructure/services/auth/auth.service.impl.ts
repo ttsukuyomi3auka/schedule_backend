@@ -2,9 +2,10 @@ import { compareSync, hashSync } from "bcrypt-ts";
 import { UserEntity } from "../../../core/entities/user.entity";
 import { UserRepository } from "../../../core/repositories/user/user.repository";
 import { AuthService } from "../../../core/services/auth/auth.service";
-import { generateTokens } from "../../../utils/utils";
+import { generateTokens, verifyToken } from "../../../utils/utils";
 import { UserRoleEnum } from "../../../core/entities/enums/userRole.enum";
 import { JWTTokens } from "../../../common/interfaces/jwt.interface";
+import { ShortUserInfo } from "../../../common/interfaces/shortUserInfo";
 
 export class AuthServiceImpl implements AuthService {
   constructor(private userRepository: UserRepository) {}
@@ -18,6 +19,7 @@ export class AuthServiceImpl implements AuthService {
     const hashedPassword = hashSync(password, 10);
 
     const newUser: UserEntity = {
+      userId: "",
       fullName: "",
       login: login.toLowerCase(),
       hasPassword: hashedPassword,
@@ -41,5 +43,21 @@ export class AuthServiceImpl implements AuthService {
     const token = generateTokens(findedUser);
 
     return token;
+  }
+
+  async refresh(refreshToken: string): Promise<string> {
+    const payload = await verifyToken(refreshToken);
+    if (!payload) {
+      throw new Error("Токен не валиден!");
+    }
+
+    const { userId } = payload as ShortUserInfo;
+
+    const user = await this.userRepository.findUserById(userId);
+    if (!user) {
+      throw new Error("Пользователь не найден");
+    }
+    const newTokens = generateTokens(user);
+    return newTokens.access;
   }
 }
