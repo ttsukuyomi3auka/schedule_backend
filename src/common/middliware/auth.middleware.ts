@@ -1,5 +1,4 @@
 import { NextFunction, Request, Response } from "express";
-import { ShortUserInfo } from "../interfaces/shortUserInfo";
 import { verifyToken } from "../../utils/utils";
 
 export const authMiddliware = async (req: Request, res: Response, next: NextFunction) => {
@@ -18,7 +17,7 @@ export const authMiddliware = async (req: Request, res: Response, next: NextFunc
       res.status(403).json({ message: "Токен не валиден!" });
       return;
     }
-    const { role, userId } = payload as ShortUserInfo;
+    req.user = payload;
     next();
   } catch (error) {
     if (error instanceof Error) {

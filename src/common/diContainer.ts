@@ -25,5 +25,6 @@ container.bind(DependencyKeys.authService).toInstance(AuthServiceImpl).inSinglet
 
 injected(AuthServiceImpl, DependencyKeys.userRepository);
 injected(UserRepositoryImpl, DependencyKeys.userDataBaseConverter);
+injected(UserServiceImpl, DependencyKeys.userRepository);
 
 //? сначала пишу все токены, потом классы которые их реализуют, после чего прописываю иньекции важно чтобы они были после билдов
