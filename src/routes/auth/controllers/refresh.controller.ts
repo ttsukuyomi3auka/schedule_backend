@@ -5,12 +5,12 @@ const authService = container.get(DependencyKeys.authService);
 
 export const refreshController = async (req: Request, res: Response) => {
   try {
-    const { refreshToken } = req.body;
-    const token = await authService.refresh(refreshToken);
+    const { refresh } = req.body;
+    const token = await authService.refresh(refresh);
     res.status(200).json(token);
   } catch (error) {
     if (error instanceof Error) {
-      res.status(400).json({ message: error.message });
+      res.status(400).send(error.message);
       return;
     }
     console.log(error);

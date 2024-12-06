@@ -14,10 +14,10 @@ export const signUpController = async (req: Request, res: Response) => {
     res.status(201).send("Регистрация прошла успешно!");
   } catch (error) {
     if (error instanceof Error) {
-      res.status(400).json({ message: error.message });
+      res.status(400).send(error.message);
       return;
     }
     console.log(error);
-    res.status(500).send("Произошла ошибка на сервере.");
+    res.status(500).send("Произошла ошибка на сервере");
   }
 };

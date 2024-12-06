@@ -13,7 +13,7 @@ export class AuthServiceImpl implements AuthService {
   async signUp(login: string, password: string): Promise<boolean> {
     const existingUser = await this.userRepository.findUserByLogin(login);
     if (existingUser) {
-      throw new Error("Пользователь с таким логином уже существует.");
+      throw new Error("Пользователь с таким логином уже существует");
     }
 
     const hashedPassword = hashSync(password, 10);

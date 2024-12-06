@@ -12,11 +12,11 @@ export const authMiddliware = async (req: Request, res: Response, next: NextFunc
     }
 
     const payload = await verifyToken(token);
-
     if (!payload) {
-      res.status(403).json({ message: "Токен не валиден!" });
+      res.status(401).json({ message: "Токен не валиден!" });
       return;
     }
+    console.log(payload);
     req.user = payload;
     next();
   } catch (error) {
@@ -24,7 +24,6 @@ export const authMiddliware = async (req: Request, res: Response, next: NextFunc
       res.status(400).json({ message: error.message });
       return;
     }
-    console.log(error);
     res.status(500).send("Произошла ошибка на сервере.");
   }
 };

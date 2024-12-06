@@ -13,6 +13,8 @@ export const getMeController = async (req: Request, res: Response) => {
     const user = await userService.getMe(userData.userId);
     res.status(201).json(user);
   } catch (error) {
-    error instanceof Error ? res.status(500).json({ message: error.message }) : res.status(500);
+    error instanceof Error
+      ? res.status(400).send(error.message)
+      : res.status(500).send("Произошла ошибка на сервере");
   }
 };
