@@ -6,9 +6,9 @@ export interface ScheduleRepository {
 
   //   getSchedulesByGroupNumber(groupNumber: number): Promise<ScheduleRecordEntity[]>; // Получить расписание по номеру группы
 
-  addScheduleEntry(entry: ScheduleEntryEntity): Promise<string>; // Добавить новую запись (возвращает ID)
+  addScheduleEntry(entry: ScheduleEntryEntity): Promise<ScheduleEntryEntity>;
 
-  addScheduleRecord(record: ScheduleRecordEntity): Promise<string>; // Добавить конкретную запись (возвращает ID)
+  addScheduleRecord(record: ScheduleRecordEntity): Promise<boolean>;
 
   //   updateScheduleEntry(
   //     entryId: string,

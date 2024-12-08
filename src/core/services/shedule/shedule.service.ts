@@ -7,7 +7,7 @@ export interface ScheduleService {
 
   //   getScheduleByGroupNumber(groupNumber: number): Promise<ScheduleRecordEntity[]>; // Получить расписание для группы
 
-  createScheduleEntry(entry: CreateScheduleEntryDTO): Promise<string>; // Добавить новую запись расписания
+  createScheduleEntry(entry: CreateScheduleEntryDTO): Promise<boolean>; // Добавить новую запись расписания
 
   //   createScheduleRecord(record: ScheduleRecordEntity): Promise<string>; // Добавить конкретную запись
 

@@ -10,6 +10,8 @@ import { ScheduleService } from "../core/services/shedule/shedule.service";
 import { ScheduleServiceImpl } from "../infrastructure/services/schedule/shedule.service.impl";
 import { ScheduleRepository } from "../core/repositories/schedule/schedule.repository";
 import { ScheduleRepositoryImpl } from "../infrastructure/repositories/schedule/schedule.repository.impl";
+import { ScheduleEntryDataBaseConverter } from "../infrastructure/converters/scheduleEntryDataBase.converter";
+import { ScheduleRecordDataBaseConverter } from "../infrastructure/converters/scheduleRecordDataBase.converter";
 
 export const DependencyKeys = {
   userRepository: token<UserRepository>("userRepository"),
@@ -18,6 +20,12 @@ export const DependencyKeys = {
   authService: token<AuthService>("authService"),
   scheduleService: token<ScheduleService>("scheduleService"),
   scheduleRepository: token<ScheduleRepository>("scheduleRepository"),
+  scheduleEntryDataBaseConverter: token<ScheduleEntryDataBaseConverter>(
+    "scheduleEntryDataBaseConverter"
+  ),
+  scheduleRecordDataBaseConverter: token<ScheduleRecordDataBaseConverter>(
+    "scheduleRecordDataBaseConverter"
+  ),
 };
 export const container = new Container();
 
@@ -34,9 +42,23 @@ container
   .toInstance(ScheduleRepositoryImpl)
   .inSingletonScope();
 
+container
+  .bind(DependencyKeys.scheduleEntryDataBaseConverter)
+  .toInstance(ScheduleEntryDataBaseConverter)
+  .inSingletonScope();
+container
+  .bind(DependencyKeys.scheduleRecordDataBaseConverter)
+  .toInstance(ScheduleRecordDataBaseConverter)
+  .inSingletonScope();
+
 injected(AuthServiceImpl, DependencyKeys.userRepository);
 injected(UserRepositoryImpl, DependencyKeys.userDataBaseConverter);
 injected(UserServiceImpl, DependencyKeys.userRepository);
+injected(
+  ScheduleRepositoryImpl,
+  DependencyKeys.scheduleRecordDataBaseConverter,
+  DependencyKeys.scheduleEntryDataBaseConverter
+);
 injected(ScheduleServiceImpl, DependencyKeys.scheduleRepository);
 
 //? сначала пишу все токены, потом классы которые их реализуют, после чего прописываю иньекции важно чтобы они были после билдов

@@ -7,10 +7,10 @@ import { TeacherEntity } from "./teacher.entity";
 export interface ScheduleRecordEntity {
   id: string; // Уникальный идентификатор записи
   target: TargetEntity; // Экземпляр TargetEntity
-  discipline: DisciplineEntity; // Название дисциплины
-  teachers: TeacherEntity[]; // Преподаватель
+  discipline: string; // Название дисциплины
+  teachers: string[]; // Преподаватель
   lessonType: LessonTypeEnum; // Тип занятия
-  date: Date; // Конкретная дата занятия
+  date: string; // Конкретная дата занятия
   day: number; //Номер дня недели [1-пн, 2-вт, 3-ср, 4-чт, 5-пт, 6-сб, 7-вс]
   time: number; // Время занятия
   lessonFormat: LessonFormatEnum;
