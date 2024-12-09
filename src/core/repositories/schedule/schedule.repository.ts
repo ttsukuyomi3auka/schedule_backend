@@ -10,6 +10,8 @@ export interface ScheduleRepository {
 
   addScheduleRecord(record: ScheduleRecordEntity): Promise<boolean>;
 
+  findRecordByDateAndTime(date: string, time: number): Promise<ScheduleRecordEntity | null>;
+
   //   updateScheduleEntry(
   //     entryId: string,
   //     updatedEntry: Partial<ScheduleEntryEntity>

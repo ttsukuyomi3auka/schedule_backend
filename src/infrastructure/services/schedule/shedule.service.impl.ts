@@ -3,19 +3,14 @@ import { ScheduleEntryEntity } from "../../../core/entities/scheduleEntry.entity
 import { ScheduleRecordEntity } from "../../../core/entities/scheduleRecord.entity";
 import { ScheduleRepository } from "../../../core/repositories/schedule/schedule.repository";
 import { ScheduleService } from "../../../core/services/shedule/shedule.service";
-
-
-
-
-
-//TODO нельзя чтобы на один день было несколько записей!!!!!!!! 
+import { formatDate, getDayFromIndex, getTimeFromIndex } from "../../../utils/format";
 
 export class ScheduleServiceImpl implements ScheduleService {
   constructor(private scheduleRepository: ScheduleRepository) {}
   async createScheduleEntry(entry: CreateScheduleEntryDTO): Promise<boolean> {
-    // 1. Создание ScheduleEntryEntity из DTO
+    //? Создание ScheduleEntryEntity из DTO
     const scheduleEntry: ScheduleEntryEntity = {
-      id: "", // Будет сгенерировано в репозитории
+      id: "",
       target: entry.target,
       discipline: entry.discipline,
       teachers: entry.teacher,
@@ -27,19 +22,31 @@ export class ScheduleServiceImpl implements ScheduleService {
       room: entry.room,
     };
 
-    // 2. Сохранение ScheduleEntry в базе
-    const savedEntry = await this.scheduleRepository.addScheduleEntry(scheduleEntry);
-    console.log(savedEntry);
-
-    // 3. Генерация записей ScheduleRecord
-    const scheduleRecords = this.generateScheduleRecords(savedEntry);
-
-    if (!scheduleRecords) {
+    //? Генерация записей ScheduleRecord
+    const scheduleRecords = this.generateScheduleRecords(scheduleEntry);
+    if (!scheduleRecords || scheduleRecords.length == 0) {
       throw new Error("Не удалось создать записи");
     }
 
-    // 4. Сохранение записей ScheduleRecord в базе
+    //? Проверка что все записи валидны
     for (const record of scheduleRecords) {
+      const exist = await this.scheduleRepository.findRecordByDateAndTime(record.date, record.time);
+      if (exist != null) {
+        throw new Error(
+          `Место на ${getDayFromIndex(record.day)} ${formatDate(record.date)} - ${getTimeFromIndex(
+            record.time
+          )} уже занято`
+        );
+      }
+    }
+
+    //? Сохранение ScheduleEntry в базе
+    const savedEntry = await this.scheduleRepository.addScheduleEntry(scheduleEntry);
+    console.log(savedEntry);
+
+    //? Сохранение записей ScheduleRecord в базе
+    for (const record of scheduleRecords) {
+      record.scheduleEntryId = savedEntry.id;
       const recordAdded = await this.scheduleRepository.addScheduleRecord(record);
       if (!recordAdded) {
         throw new Error("Не удалось сохранить запись занятия в базу данных");
@@ -54,28 +61,34 @@ export class ScheduleServiceImpl implements ScheduleService {
     const startDate = new Date(entry.periodStart);
     const endDate = new Date(entry.periodEnd);
 
-    if (entry.daysAndTime instanceof Map) {
-      for (const [day, times] of entry.daysAndTime.entries()) {
-        const dayOfWeek = parseInt(day);
+    // Преобразование в Map, если это объект
+    let daysAndTime: Map<string, number[]>;
+    if (!(entry.daysAndTime instanceof Map)) {
+      daysAndTime = new Map(Object.entries(entry.daysAndTime));
+    } else {
+      daysAndTime = entry.daysAndTime;
+    }
 
-        // Перебор дней в периоде
-        for (let date = new Date(startDate); date <= endDate; date.setDate(date.getDate() + 1)) {
-          if (date.getDay() === dayOfWeek) {
-            for (const time of times) {
-              records.push({
-                id: "",
-                target: entry.target,
-                discipline: entry.discipline,
-                teachers: entry.teachers,
-                lessonType: entry.lessonType,
-                date: new Date(date).toISOString(), // Создаем новый объект даты, чтобы избежать мутации
-                day: dayOfWeek,
-                time: time,
-                lessonFormat: entry.lessonFormat,
-                room: entry.room,
-                scheduleEntryId: entry.id,
-              });
-            }
+    for (const [day, times] of daysAndTime.entries()) {
+      const dayOfWeek = parseInt(day);
+
+      // Перебор дней в периоде
+      for (let date = new Date(startDate); date <= endDate; date.setDate(date.getDate() + 1)) {
+        if (date.getDay() === dayOfWeek) {
+          for (const time of times) {
+            records.push({
+              id: "",
+              target: entry.target,
+              discipline: entry.discipline,
+              teachers: entry.teachers,
+              lessonType: entry.lessonType,
+              date: new Date(date).toISOString(),
+              day: dayOfWeek,
+              time: time,
+              lessonFormat: entry.lessonFormat,
+              room: entry.room,
+              scheduleEntryId: entry.id,
+            });
           }
         }
       }

@@ -28,4 +28,13 @@ export class ScheduleRepositoryImpl implements ScheduleRepository {
     }
     return true;
   }
+
+  async findRecordByDateAndTime(date: string, time: number): Promise<ScheduleRecordEntity | null> {
+    const model = await ScheduleRecordModel.findOne({ date, time }).exec();
+    if (!model) {
+      return null;
+    }
+    const entity = this.scheduleRecordDataBaseConverter.toEntity(model);
+    return entity;
+  }
 }
