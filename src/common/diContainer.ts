@@ -12,6 +12,10 @@ import { UserRepository } from "../core/repositories/user.repository";
 import { AuthService } from "../core/services/auth.service";
 import { ScheduleService } from "../core/services/shedule.service";
 import { UserService } from "../core/services/user.service";
+import { GroupRepository } from "../core/repositories/group.repository";
+import { GroupRepositoryImpl } from "../infrastructure/repositories/group.respository.impl";
+import { InformationService } from "../core/services/information.service";
+import { InformationServiceImpl } from "../infrastructure/services/information.service.impl";
 
 export const DependencyKeys = {
   userRepository: token<UserRepository>("userRepository"),
@@ -26,6 +30,8 @@ export const DependencyKeys = {
   scheduleRecordDataBaseConverter: token<ScheduleRecordDataBaseConverter>(
     "scheduleRecordDataBaseConverter"
   ),
+  groupRepository: token<GroupRepository>("groupRepository"),
+  informationService: token<InformationService>("informationService"),
 };
 export const container = new Container();
 
@@ -50,6 +56,11 @@ container
   .bind(DependencyKeys.scheduleRecordDataBaseConverter)
   .toInstance(ScheduleRecordDataBaseConverter)
   .inSingletonScope();
+container.bind(DependencyKeys.groupRepository).toInstance(GroupRepositoryImpl).inSingletonScope();
+container
+  .bind(DependencyKeys.informationService)
+  .toInstance(InformationServiceImpl)
+  .inSingletonScope();
 
 injected(AuthServiceImpl, DependencyKeys.userRepository);
 injected(UserRepositoryImpl, DependencyKeys.userDataBaseConverter);
@@ -60,5 +71,6 @@ injected(
   DependencyKeys.scheduleEntryDataBaseConverter
 );
 injected(ScheduleServiceImpl, DependencyKeys.scheduleRepository);
+injected(InformationServiceImpl, DependencyKeys.groupRepository);
 
 //? сначала пишу все токены, потом классы которые их реализуют, после чего прописываю иньекции важно чтобы они были после билдов

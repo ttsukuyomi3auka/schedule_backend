@@ -10,6 +10,8 @@ export interface ScheduleRepository {
 
   addScheduleRecord(record: ScheduleRecordEntity): Promise<boolean>;
 
+  findRecordsByGroupNumber(number: number): Promise<ScheduleRecordEntity[]>;
+
   findRecordByDateAndTime(date: string, time: number): Promise<ScheduleRecordEntity | null>;
 
   //   updateScheduleEntry(
