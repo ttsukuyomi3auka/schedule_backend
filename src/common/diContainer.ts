@@ -16,6 +16,7 @@ import { GroupRepository } from "../core/repositories/group.repository";
 import { GroupRepositoryImpl } from "../infrastructure/repositories/group.respository.impl";
 import { InformationService } from "../core/services/information.service";
 import { InformationServiceImpl } from "../infrastructure/services/information.service.impl";
+import { GroupDataBaseConverter } from "../infrastructure/converters/groupDataBase.converter";
 
 export const DependencyKeys = {
   userRepository: token<UserRepository>("userRepository"),
@@ -32,6 +33,7 @@ export const DependencyKeys = {
   ),
   groupRepository: token<GroupRepository>("groupRepository"),
   informationService: token<InformationService>("informationService"),
+  groupDataBaseConverter: token<GroupDataBaseConverter>("groupDataBaseConverter"),
 };
 export const container = new Container();
 
@@ -61,6 +63,10 @@ container
   .bind(DependencyKeys.informationService)
   .toInstance(InformationServiceImpl)
   .inSingletonScope();
+container
+  .bind(DependencyKeys.groupDataBaseConverter)
+  .toInstance(GroupDataBaseConverter)
+  .inSingletonScope();
 
 injected(AuthServiceImpl, DependencyKeys.userRepository);
 injected(UserRepositoryImpl, DependencyKeys.userDataBaseConverter);
@@ -71,6 +77,7 @@ injected(
   DependencyKeys.scheduleEntryDataBaseConverter
 );
 injected(ScheduleServiceImpl, DependencyKeys.scheduleRepository);
+injected(GroupRepositoryImpl, DependencyKeys.groupDataBaseConverter);
 injected(InformationServiceImpl, DependencyKeys.groupRepository);
 
 //? сначала пишу все токены, потом классы которые их реализуют, после чего прописываю иньекции важно чтобы они были после билдов

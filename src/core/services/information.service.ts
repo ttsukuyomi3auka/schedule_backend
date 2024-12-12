@@ -1,5 +1,6 @@
 import { GroupEntity } from "../entities/group.entity";
 
 export interface InformationService {
-  getGroups(): Promise<GroupEntity[] | null>;
+  getGroups(): Promise<GroupEntity[]>;
+  addGroup(group: GroupEntity): Promise<void>;
 }
