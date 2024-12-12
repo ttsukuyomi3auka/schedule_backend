@@ -1,17 +1,17 @@
 import { Container, injected, token } from "brandi";
-import { UserRepository } from "../core/repositories/user/user.repository";
-import { UserService } from "../core/services/user/user.service";
 import { UserDataBaseConverter } from "../infrastructure/converters/userDataBase.converter";
-import { UserServiceImpl } from "../infrastructure/services/user/user.service.impl";
-import { UserRepositoryImpl } from "../infrastructure/repositories/user/user.repository.impl";
-import { AuthService } from "../core/services/auth/auth.service";
-import { AuthServiceImpl } from "../infrastructure/services/auth/auth.service.impl";
-import { ScheduleService } from "../core/services/shedule/shedule.service";
-import { ScheduleServiceImpl } from "../infrastructure/services/schedule/shedule.service.impl";
-import { ScheduleRepository } from "../core/repositories/schedule/schedule.repository";
-import { ScheduleRepositoryImpl } from "../infrastructure/repositories/schedule/schedule.repository.impl";
+import { UserServiceImpl } from "../infrastructure/services/user.service.impl";
+import { UserRepositoryImpl } from "../infrastructure/repositories/user.repository.impl";
+import { AuthServiceImpl } from "../infrastructure/services/auth.service.impl";
+import { ScheduleServiceImpl } from "../infrastructure/services/shedule.service.impl";
+import { ScheduleRepository } from "../core/repositories/schedule.repository";
+import { ScheduleRepositoryImpl } from "../infrastructure/repositories/schedule.repository.impl";
 import { ScheduleEntryDataBaseConverter } from "../infrastructure/converters/scheduleEntryDataBase.converter";
 import { ScheduleRecordDataBaseConverter } from "../infrastructure/converters/scheduleRecordDataBase.converter";
+import { UserRepository } from "../core/repositories/user.repository";
+import { AuthService } from "../core/services/auth.service";
+import { ScheduleService } from "../core/services/shedule.service";
+import { UserService } from "../core/services/user.service";
 
 export const DependencyKeys = {
   userRepository: token<UserRepository>("userRepository"),

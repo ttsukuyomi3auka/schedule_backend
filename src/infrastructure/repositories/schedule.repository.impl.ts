@@ -1,10 +1,10 @@
-import { ScheduleEntryEntity } from "../../../core/entities/scheduleEntry.entity";
-import { ScheduleRecordEntity } from "../../../core/entities/scheduleRecord.entity";
-import { ScheduleRepository } from "../../../core/repositories/schedule/schedule.repository";
-import { ScheduleEntryDataBaseConverter } from "../../converters/scheduleEntryDataBase.converter";
-import { ScheduleRecordDataBaseConverter } from "../../converters/scheduleRecordDataBase.converter";
-import { ScheduleEntryModel } from "../../models/scheduleEntry.model";
-import { ScheduleRecordModel } from "../../models/scheduleRecord.model";
+import { ScheduleEntryEntity } from "../../core/entities/scheduleEntry.entity";
+import { ScheduleRecordEntity } from "../../core/entities/scheduleRecord.entity";
+import { ScheduleRepository } from "../../core/repositories/schedule.repository";
+import { ScheduleEntryDataBaseConverter } from "../converters/scheduleEntryDataBase.converter";
+import { ScheduleRecordDataBaseConverter } from "../converters/scheduleRecordDataBase.converter";
+import { ScheduleEntryModel } from "../models/scheduleEntry.model";
+import { ScheduleRecordModel } from "../models/scheduleRecord.model";
 
 export class ScheduleRepositoryImpl implements ScheduleRepository {
   constructor(

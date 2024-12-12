@@ -1,6 +1,6 @@
 import { Request, Response } from "express";
-import { UserService } from "../../../core/services/user/user.service";
 import { container, DependencyKeys } from "../../../common/diContainer";
+import { UserService } from "../../../core/services/user.service";
 
 const userService: UserService = container.get(DependencyKeys.userService);
 

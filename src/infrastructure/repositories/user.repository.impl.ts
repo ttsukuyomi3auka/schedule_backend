@@ -1,7 +1,7 @@
-import { UserEntity } from "../../../core/entities/user.entity";
-import { UserRepository } from "../../../core/repositories/user/user.repository";
-import { UserDataBaseConverter } from "../../converters/userDataBase.converter";
-import { UserDataBaseModel } from "../../models/user.model";
+import { UserEntity } from "../../core/entities/user.entity";
+import { UserRepository } from "../../core/repositories/user.repository";
+import { UserDataBaseConverter } from "../converters/userDataBase.converter";
+import { UserDataBaseModel } from "../models/user.model";
 
 export class UserRepositoryImpl implements UserRepository {
   constructor(private userDataBaseConverter: UserDataBaseConverter) {}

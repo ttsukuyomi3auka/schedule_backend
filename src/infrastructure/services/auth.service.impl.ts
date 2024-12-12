@@ -1,11 +1,11 @@
 import { compareSync, hashSync } from "bcrypt-ts";
-import { UserEntity } from "../../../core/entities/user.entity";
-import { UserRepository } from "../../../core/repositories/user/user.repository";
-import { AuthService } from "../../../core/services/auth/auth.service";
-import { generateTokens, verifyToken } from "../../../utils/utils";
-import { UserRoleEnum } from "../../../core/entities/enums/userRole.enum";
-import { JWTTokens } from "../../../common/interfaces/jwt.interface";
-import { ShortUserInfo } from "../../../common/interfaces/shortUserInfo";
+import { UserEntity } from "../../core/entities/user.entity";
+import { generateTokens, verifyToken } from "../../utils/utils";
+import { UserRoleEnum } from "../../core/entities/enums/userRole.enum";
+import { JWTTokens } from "../../common/interfaces/jwt.interface";
+import { ShortUserInfo } from "../../common/interfaces/shortUserInfo";
+import { UserRepository } from "../../core/repositories/user.repository";
+import { AuthService } from "../../core/services/auth.service";
 
 export class AuthServiceImpl implements AuthService {
   constructor(private userRepository: UserRepository) {}

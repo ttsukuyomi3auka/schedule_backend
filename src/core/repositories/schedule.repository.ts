@@ -1,5 +1,5 @@
-import { ScheduleEntryEntity } from "../../entities/scheduleEntry.entity";
-import { ScheduleRecordEntity } from "../../entities/scheduleRecord.entity";
+import { ScheduleEntryEntity } from "../entities/scheduleEntry.entity";
+import { ScheduleRecordEntity } from "../entities/scheduleRecord.entity";
 
 export interface ScheduleRepository {
   //   getScheduleRecordsByEntryId(entryId: string): Promise<ScheduleRecordEntity[]>; // Получить записи по айди entry

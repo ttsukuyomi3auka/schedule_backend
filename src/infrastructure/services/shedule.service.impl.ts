@@ -1,9 +1,10 @@
-import { CreateScheduleEntryDTO } from "../../../core/entities/dtos/createScheduleEntry.dto";
-import { ScheduleEntryEntity } from "../../../core/entities/scheduleEntry.entity";
-import { ScheduleRecordEntity } from "../../../core/entities/scheduleRecord.entity";
-import { ScheduleRepository } from "../../../core/repositories/schedule/schedule.repository";
-import { ScheduleService } from "../../../core/services/shedule/shedule.service";
-import { formatDate, getDayFromIndex, getTimeFromIndex } from "../../../utils/format";
+import { CreateScheduleEntryDTO } from "../../core/entities/dtos/createScheduleEntry.dto";
+import { ScheduleEntryEntity } from "../../core/entities/scheduleEntry.entity";
+import { ScheduleRecordEntity } from "../../core/entities/scheduleRecord.entity";
+import { ScheduleRepository } from "../../core/repositories/schedule.repository";
+import { ScheduleService } from "../../core/services/shedule.service";
+
+import { formatDate, getDayFromIndex, getTimeFromIndex } from "../../utils/format";
 
 export class ScheduleServiceImpl implements ScheduleService {
   constructor(private scheduleRepository: ScheduleRepository) {}
@@ -58,10 +59,11 @@ export class ScheduleServiceImpl implements ScheduleService {
 
   private generateScheduleRecords(entry: ScheduleEntryEntity): ScheduleRecordEntity[] {
     const records: ScheduleRecordEntity[] = [];
-    const startDate = new Date(entry.periodStart);
-    const endDate = new Date(entry.periodEnd);
+    const startDate = new Date(entry.periodStart.split(".").reverse().join("-"));
+    const endDate = new Date(entry.periodEnd.split(".").reverse().join("-"));
 
-    // Преобразование в Map, если это объект
+    console.log(entry);
+
     let daysAndTime: Map<string, number[]>;
     if (!(entry.daysAndTime instanceof Map)) {
       daysAndTime = new Map(Object.entries(entry.daysAndTime));
@@ -72,7 +74,6 @@ export class ScheduleServiceImpl implements ScheduleService {
     for (const [day, times] of daysAndTime.entries()) {
       const dayOfWeek = parseInt(day);
 
-      // Перебор дней в периоде
       for (let date = new Date(startDate); date <= endDate; date.setDate(date.getDate() + 1)) {
         if (date.getDay() === dayOfWeek) {
           for (const time of times) {

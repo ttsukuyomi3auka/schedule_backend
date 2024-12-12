@@ -1,6 +1,4 @@
-import { CreateScheduleEntryDTO } from "../../entities/dtos/createScheduleEntry.dto";
-import { ScheduleEntryEntity } from "../../entities/scheduleEntry.entity";
-import { ScheduleRecordEntity } from "../../entities/scheduleRecord.entity";
+import { CreateScheduleEntryDTO } from "../entities/dtos/createScheduleEntry.dto";
 
 export interface ScheduleService {
   //   getAllSchedules(): Promise<ScheduleEntryEntity[]>; // Получить все расписание (например, для администраторов)

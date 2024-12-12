@@ -1,6 +1,6 @@
-import { UserEntity } from "../../../core/entities/user.entity";
-import { UserRepository } from "../../../core/repositories/user/user.repository";
-import { UserService } from "../../../core/services/user/user.service";
+import { UserEntity } from "../../core/entities/user.entity";
+import { UserRepository } from "../../core/repositories/user.repository";
+import { UserService } from "../../core/services/user.service";
 
 export class UserServiceImpl implements UserService {
   constructor(private userRepository: UserRepository) {}
