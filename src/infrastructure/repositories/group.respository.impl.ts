@@ -18,9 +18,12 @@ export class GroupRepositoryImpl implements GroupRepository {
     if (!models) {
       throw new Error("Не удалось получить группы");
     }
-    return models;
+    const entities = models.map((model) => this.groupDataBaseConverter.toEntity(model));
+    return entities;
   }
-  findGroupByNumber(number: number): Promise<GroupEntity> {
-    throw new Error("Method not implemented.");
+  async findGroupByNumber(number: number): Promise<GroupEntity> {
+    const model = await GroupModel.findOne({ number: number });
+    if (!model) throw new Error("Не удалось получить информацию о группе");
+    return this.groupDataBaseConverter.toEntity(model);
   }
 }

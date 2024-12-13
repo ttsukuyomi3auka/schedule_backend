@@ -4,6 +4,7 @@ import { InformationService } from "../../core/services/information.service";
 
 export class InformationServiceImpl implements InformationService {
   constructor(private groupRepository: GroupRepository) {}
+
   async addGroup(group: GroupEntity): Promise<void> {
     await this.groupRepository.add(group);
   }
@@ -14,5 +15,10 @@ export class InformationServiceImpl implements InformationService {
       throw new Error("Группы не найдены");
     }
     return groups;
+  }
+
+  async getGroupByNumber(number: number): Promise<GroupEntity> {
+    const group = await this.groupRepository.findGroupByNumber(number);
+    return group;
   }
 }
