@@ -4,10 +4,10 @@ import { InformationService } from "../../../core/services/information.service";
 
 const informationService: InformationService = container.get(DependencyKeys.informationService);
 
-export const getGroupByNumberController = async (req: Request, res: Response) => {
+export const searchGroupsByMessageController = async (req: Request, res: Response) => {
   try {
-    const group = await informationService.getGroupByNumber(Number(req.params.number));
-    res.status(200).json(group);
+    const groups = await informationService.seacrchGroupByMessage(req.body.message);
+    res.status(200).json(groups);
   } catch (error) {
     error instanceof Error
       ? res.status(400).send(error.message)

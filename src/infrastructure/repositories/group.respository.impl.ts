@@ -25,4 +25,20 @@ export class GroupRepositoryImpl implements GroupRepository {
     if (!model) throw new Error("Не удалось получить информацию о группе");
     return this.groupDataBaseConverter.toEntity(model);
   }
+  async searchByMessage(message: string): Promise<GroupEntity[]> {
+    const models = await GroupModel.find({
+      $expr: {
+        $regexMatch: {
+          input: { $toString: "$number" },
+          regex: message,
+          options: "i",
+        },
+      },
+    });
+
+    if (!models) {
+      throw new Error("Ошибка при поиске");
+    }
+    return models.map((model) => this.groupDataBaseConverter.toEntity(model));
+  }
 }

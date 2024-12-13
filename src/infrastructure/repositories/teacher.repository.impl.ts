@@ -5,6 +5,7 @@ import { TeacherModel } from "../models/teacher.model";
 
 export class TeacherRepositoryImpl implements TeacherRepository {
   constructor(private teacherDataBaseConverter: TeacherDataBaseConverter) {}
+
   async add(Teacher: Partial<TeacherEntity>): Promise<void> {
     const model = await new TeacherModel(Teacher).save();
     if (!model) {
@@ -16,5 +17,16 @@ export class TeacherRepositoryImpl implements TeacherRepository {
     if (!models) throw new Error("Не удалось получить преподавателей");
     const entities = models.map((model) => this.teacherDataBaseConverter.toEntity(model));
     return entities;
+  }
+
+  async searchByMessage(message: string): Promise<TeacherEntity[]> {
+    const models = await TeacherModel.find({
+      fullName: { $regex: message, $options: "i" },
+    });
+
+    if (!models) {
+      throw new Error("Ошибка при поиске");
+    }
+    return models.map((model) => this.teacherDataBaseConverter.toEntity(model));
   }
 }

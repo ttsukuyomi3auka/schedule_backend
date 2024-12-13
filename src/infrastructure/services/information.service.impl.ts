@@ -29,6 +29,12 @@ export class InformationServiceImpl implements InformationService {
     const group = await this.groupRepository.findGroupByNumber(number);
     return group;
   }
+  async seacrchGroupByMessage(message: string): Promise<GroupEntity[]> {
+    const groups = await this.groupRepository.searchByMessage(message);
+    if (groups.length === 0) throw new Error("Не удалось найти подходящие группы");
+
+    return groups;
+  }
 
   async addDiscipline(discipline: Partial<DisciplineEntity>): Promise<void> {
     await this.disciplineRepository.add(discipline);
@@ -41,14 +47,25 @@ export class InformationServiceImpl implements InformationService {
     return disciplines;
   }
 
+  async searchDisciplineByMessage(message: string): Promise<DisciplineEntity[]> {
+    const disciplines = await this.disciplineRepository.searchByMessage(message);
+    if (disciplines.length === 0) throw new Error("Не удалось найти подходящие дисциплины");
+    return disciplines;
+  }
+
   async addTeacher(teacher: Partial<TeacherEntity>): Promise<void> {
     await this.teacherRepostitory.add(teacher);
   }
   async getTeachers(): Promise<TeacherEntity[]> {
     const teachers = await this.teacherRepostitory.findTeachers();
-    if (teachers.length === 0) {
-      throw new Error("Преподавателей ещё нет в базе");
-    }
+    if (teachers.length === 0) throw new Error("Преподавателей ещё нет в базе");
+
+    return teachers;
+  }
+
+  async searchTeacherByMessage(message: string): Promise<TeacherEntity[]> {
+    const teachers = await this.teacherRepostitory.searchByMessage(message);
+    if (teachers.length === 0) throw new Error("Не удалось найти подходящих преподователей");
     return teachers;
   }
 }
