@@ -4,19 +4,19 @@ import { LessonFormatEnum } from "../../core/entities/enums/lessonFormat.enum";
 import { TargetTypeEnum } from "../../core/entities/enums/targetType.enum";
 
 export interface IScheduleEntryModel {
-  _id: mongoose.Types.ObjectId; // Уникальный идентификатор записи
+  _id: mongoose.Types.ObjectId;
   target: {
-    type: TargetTypeEnum; // Тип цели (GROUP, FACULTY, UNIVERSITY)
-    values?: string[]; // Значения цели (например, номер группы или название факультета)
+    type: TargetTypeEnum;
+    values?: string[];
   };
-  discipline: string; // Название дисциплины
-  teachers: string[]; // Список преподавателей
-  lessonType: LessonTypeEnum; // Тип занятия
-  daysAndTime: Record<number, number[]>; // Маппинг дней недели на массив времени
-  periodStart: string; // Дата начала периода
-  periodEnd: string; // Дата окончания периода
-  lessonFormat: LessonFormatEnum; // Формат занятия
-  room: string; // Аудитория или ссылка на ресурс
+  discipline: string;
+  teachers: string[];
+  lessonType: LessonTypeEnum;
+  daysAndTime: Record<number, number[]>;
+  periodStart: string;
+  periodEnd: string;
+  lessonFormat: LessonFormatEnum;
+  room: string;
 }
 
 const scheduleEntrySchema = new Schema<IScheduleEntryModel>({

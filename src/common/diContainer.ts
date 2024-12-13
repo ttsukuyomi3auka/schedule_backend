@@ -17,12 +17,17 @@ import { GroupRepositoryImpl } from "../infrastructure/repositories/group.respos
 import { InformationService } from "../core/services/information.service";
 import { InformationServiceImpl } from "../infrastructure/services/information.service.impl";
 import { GroupDataBaseConverter } from "../infrastructure/converters/groupDataBase.converter";
+import { DisciplineRepository } from "../core/repositories/discipline.repository";
+import { DisciplineDataBaseConverter } from "../infrastructure/converters/disciplineDataBase.converter";
+import { DisciplineRepositoryImpl } from "../infrastructure/repositories/discipline.repository.impl";
 
 export const DependencyKeys = {
   userRepository: token<UserRepository>("userRepository"),
   userService: token<UserService>("userService"),
   userDataBaseConverter: token<UserDataBaseConverter>("userDataBaseConverter"),
+
   authService: token<AuthService>("authService"),
+
   scheduleService: token<ScheduleService>("scheduleService"),
   scheduleRepository: token<ScheduleRepository>("scheduleRepository"),
   scheduleEntryDataBaseConverter: token<ScheduleEntryDataBaseConverter>(
@@ -31,9 +36,14 @@ export const DependencyKeys = {
   scheduleRecordDataBaseConverter: token<ScheduleRecordDataBaseConverter>(
     "scheduleRecordDataBaseConverter"
   ),
-  groupRepository: token<GroupRepository>("groupRepository"),
+
   informationService: token<InformationService>("informationService"),
+
+  groupRepository: token<GroupRepository>("groupRepository"),
   groupDataBaseConverter: token<GroupDataBaseConverter>("groupDataBaseConverter"),
+
+  disciplineRepository: token<DisciplineRepository>("disciplineRepository"),
+  disciplineDataBaseConverter: token<DisciplineDataBaseConverter>("disciplineDataBaseConverter"),
 };
 export const container = new Container();
 
@@ -43,13 +53,14 @@ container
   .inSingletonScope();
 container.bind(DependencyKeys.userRepository).toInstance(UserRepositoryImpl).inSingletonScope();
 container.bind(DependencyKeys.userService).toInstance(UserServiceImpl).inSingletonScope();
+
 container.bind(DependencyKeys.authService).toInstance(AuthServiceImpl).inSingletonScope();
+
 container.bind(DependencyKeys.scheduleService).toInstance(ScheduleServiceImpl).inSingletonScope();
 container
   .bind(DependencyKeys.scheduleRepository)
   .toInstance(ScheduleRepositoryImpl)
   .inSingletonScope();
-
 container
   .bind(DependencyKeys.scheduleEntryDataBaseConverter)
   .toInstance(ScheduleEntryDataBaseConverter)
@@ -58,14 +69,25 @@ container
   .bind(DependencyKeys.scheduleRecordDataBaseConverter)
   .toInstance(ScheduleRecordDataBaseConverter)
   .inSingletonScope();
-container.bind(DependencyKeys.groupRepository).toInstance(GroupRepositoryImpl).inSingletonScope();
+
 container
   .bind(DependencyKeys.informationService)
   .toInstance(InformationServiceImpl)
   .inSingletonScope();
+
+container.bind(DependencyKeys.groupRepository).toInstance(GroupRepositoryImpl).inSingletonScope();
 container
   .bind(DependencyKeys.groupDataBaseConverter)
   .toInstance(GroupDataBaseConverter)
+  .inSingletonScope();
+
+container
+  .bind(DependencyKeys.disciplineRepository)
+  .toInstance(DisciplineRepositoryImpl)
+  .inSingletonScope();
+container
+  .bind(DependencyKeys.disciplineDataBaseConverter)
+  .toInstance(DisciplineDataBaseConverter)
   .inSingletonScope();
 
 injected(AuthServiceImpl, DependencyKeys.userRepository);
@@ -77,7 +99,14 @@ injected(
   DependencyKeys.scheduleEntryDataBaseConverter
 );
 injected(ScheduleServiceImpl, DependencyKeys.scheduleRepository);
+
 injected(GroupRepositoryImpl, DependencyKeys.groupDataBaseConverter);
-injected(InformationServiceImpl, DependencyKeys.groupRepository);
+injected(DisciplineRepositoryImpl, DependencyKeys.disciplineDataBaseConverter);
+
+injected(
+  InformationServiceImpl,
+  DependencyKeys.groupRepository,
+  DependencyKeys.disciplineRepository
+);
 
 //? сначала пишу все токены, потом классы которые их реализуют, после чего прописываю иньекции важно чтобы они были после билдов

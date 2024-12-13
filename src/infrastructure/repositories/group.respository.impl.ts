@@ -1,4 +1,3 @@
-import { model } from "mongoose";
 import { GroupEntity } from "../../core/entities/group.entity";
 import { GroupRepository } from "../../core/repositories/group.repository";
 import { GroupModel } from "../models/group.model";
