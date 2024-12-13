@@ -20,6 +20,9 @@ import { GroupDataBaseConverter } from "../infrastructure/converters/groupDataBa
 import { DisciplineRepository } from "../core/repositories/discipline.repository";
 import { DisciplineDataBaseConverter } from "../infrastructure/converters/disciplineDataBase.converter";
 import { DisciplineRepositoryImpl } from "../infrastructure/repositories/discipline.repository.impl";
+import { TeacherRepository } from "../core/repositories/teacher.repository";
+import { TeacherDataBaseConverter } from "../infrastructure/converters/teacherDataBase.converter";
+import { TeacherRepositoryImpl } from "../infrastructure/repositories/teacher.repository.impl";
 
 export const DependencyKeys = {
   userRepository: token<UserRepository>("userRepository"),
@@ -44,6 +47,9 @@ export const DependencyKeys = {
 
   disciplineRepository: token<DisciplineRepository>("disciplineRepository"),
   disciplineDataBaseConverter: token<DisciplineDataBaseConverter>("disciplineDataBaseConverter"),
+
+  teacherRepository: token<TeacherRepository>("teacherRepository"),
+  teacherDataBaseConverter: token<TeacherDataBaseConverter>("teacherDataBaseConverter"),
 };
 export const container = new Container();
 
@@ -90,6 +96,15 @@ container
   .toInstance(DisciplineDataBaseConverter)
   .inSingletonScope();
 
+container
+  .bind(DependencyKeys.teacherRepository)
+  .toInstance(TeacherRepositoryImpl)
+  .inSingletonScope();
+container
+  .bind(DependencyKeys.teacherDataBaseConverter)
+  .toInstance(TeacherDataBaseConverter)
+  .inSingletonScope();
+
 injected(AuthServiceImpl, DependencyKeys.userRepository);
 injected(UserRepositoryImpl, DependencyKeys.userDataBaseConverter);
 injected(UserServiceImpl, DependencyKeys.userRepository);
@@ -102,11 +117,13 @@ injected(ScheduleServiceImpl, DependencyKeys.scheduleRepository);
 
 injected(GroupRepositoryImpl, DependencyKeys.groupDataBaseConverter);
 injected(DisciplineRepositoryImpl, DependencyKeys.disciplineDataBaseConverter);
+injected(TeacherRepositoryImpl, DependencyKeys.teacherDataBaseConverter);
 
 injected(
   InformationServiceImpl,
   DependencyKeys.groupRepository,
-  DependencyKeys.disciplineRepository
+  DependencyKeys.disciplineRepository,
+  DependencyKeys.teacherRepository
 );
 
 //? сначала пишу все токены, потом классы которые их реализуют, после чего прописываю иньекции важно чтобы они были после билдов

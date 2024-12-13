@@ -1,13 +1,16 @@
 import { DisciplineEntity } from "../../core/entities/discipline.entity";
 import { GroupEntity } from "../../core/entities/group.entity";
+import { TeacherEntity } from "../../core/entities/teacher.entity";
 import { DisciplineRepository } from "../../core/repositories/discipline.repository";
 import { GroupRepository } from "../../core/repositories/group.repository";
+import { TeacherRepository } from "../../core/repositories/teacher.repository";
 import { InformationService } from "../../core/services/information.service";
 
 export class InformationServiceImpl implements InformationService {
   constructor(
     private groupRepository: GroupRepository,
-    private disciplineRepository: DisciplineRepository
+    private disciplineRepository: DisciplineRepository,
+    private teacherRepostitory: TeacherRepository
   ) {}
 
   async addGroup(group: GroupEntity): Promise<void> {
@@ -33,8 +36,19 @@ export class InformationServiceImpl implements InformationService {
   async getDisciplines(): Promise<DisciplineEntity[]> {
     const disciplines = await this.disciplineRepository.findDisciplines();
     if (disciplines.length === 0) {
-      throw new Error("Дисциплин ещё нет"); 
+      throw new Error("Дисциплин ещё нет");
     }
     return disciplines;
+  }
+
+  async addTeacher(teacher: Partial<TeacherEntity>): Promise<void> {
+    await this.teacherRepostitory.add(teacher);
+  }
+  async getTeachers(): Promise<TeacherEntity[]> {
+    const teachers = await this.teacherRepostitory.findTeachers();
+    if (teachers.length === 0) {
+      throw new Error("Преподавателей ещё нет в базе");
+    }
+    return teachers;
   }
 }
