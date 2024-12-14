@@ -7,7 +7,6 @@ const scheduleService: ScheduleService = container.get(DependencyKeys.scheduleSe
 
 export const createScheduleController = async (req: Request, res: Response) => {
   try {
-    console.log(req.body);
     const data: CreateScheduleEntryDTO = req.body;
     await scheduleService.createScheduleEntry(data);
     res.status(201).send("Расписание добавлено");

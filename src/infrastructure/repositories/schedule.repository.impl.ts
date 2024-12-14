@@ -11,6 +11,11 @@ export class ScheduleRepositoryImpl implements ScheduleRepository {
     private scheduleRecordDataBaseConverter: ScheduleRecordDataBaseConverter,
     private scheduleEntryDataBaseConverter: ScheduleEntryDataBaseConverter
   ) {}
+  async findRecordsByTeacherFullName(fullName: string): Promise<ScheduleRecordEntity[]> {
+    const models = await ScheduleRecordModel.find({ teachers: { $in: [fullName] } });
+    if (!models) throw new Error("Не удалось найти записи");
+    return models.map((model) => this.scheduleRecordDataBaseConverter.toEntity(model));
+  }
 
   async findRecordsByGroupNumber(number: number): Promise<ScheduleRecordEntity[]> {
     const models = await ScheduleRecordModel.find({

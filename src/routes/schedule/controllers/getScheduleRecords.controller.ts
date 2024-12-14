@@ -7,7 +7,6 @@ const scheduleService: ScheduleService = container.get(DependencyKeys.scheduleSe
 export const getScheduleRecordsController = async (req: Request, res: Response) => {
   try {
     const records = await scheduleService.getScheduleRecords(req.user?.userId!);
-    console.log(records);
     res.status(200).json(records);
   } catch (error) {
     error instanceof Error

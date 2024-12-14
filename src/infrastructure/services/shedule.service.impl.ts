@@ -21,12 +21,12 @@ export class ScheduleServiceImpl implements ScheduleService {
       case UserRoleEnum.STUDENT:
         records = await this.scheduleRepository.findRecordsByGroupNumber(user.groupNumber!);
         break;
-      //TODO тут для преподователея делаем запрос на поиск расписания по фио преподователея
+      case UserRoleEnum.TEACHER:
+        records = await this.scheduleRepository.findRecordsByTeacherFullName(user.fullName);
+        break;
 
       default:
         throw new Error("Не удалось получить записи");
-
-        break;
     }
     return records;
   }
@@ -71,7 +71,6 @@ export class ScheduleServiceImpl implements ScheduleService {
 
     //? Сохранение ScheduleEntry в базе
     const savedEntry = await this.scheduleRepository.addScheduleEntry(scheduleEntry);
-    console.log(savedEntry);
 
     //? Сохранение записей ScheduleRecord в базе
     for (const record of scheduleRecords) {
@@ -89,8 +88,6 @@ export class ScheduleServiceImpl implements ScheduleService {
     const records: ScheduleRecordEntity[] = [];
     const startDate = new Date(entry.periodStart.split(".").reverse().join("-"));
     const endDate = new Date(entry.periodEnd.split(".").reverse().join("-"));
-
-    console.log(entry);
 
     let daysAndTime: Map<string, number[]>;
     if (!(entry.daysAndTime instanceof Map)) {

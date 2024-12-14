@@ -16,7 +16,6 @@ export const authMiddliware = async (req: Request, res: Response, next: NextFunc
       res.status(401).send("Токен не валиден!");
       return;
     }
-    console.log(payload);
     req.user = payload;
     next();
   } catch (error) {

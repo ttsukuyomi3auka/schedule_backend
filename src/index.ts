@@ -17,5 +17,5 @@ app.listen(Enviroment.PORT, async () => {
   } else {
     console.log(`🤬 Mongoose connection is failed!`);
   }
-  console.log(`Server is running on http://localhost:${Enviroment.PORT}`);
+  console.log(`🤓 Server is running on http://localhost:${Enviroment.PORT}`);
 });
