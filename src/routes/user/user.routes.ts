@@ -6,10 +6,8 @@ import { UserRoleEnum } from "../../core/entities/enums/userRole.enum";
 
 const userRoutes = Router();
 
-userRoutes.get(
-  "/me",
-  [authMiddliware, roleMiddleware([UserRoleEnum.ADMIN, UserRoleEnum.STUDENT])],
-  getMeController
-);
+userRoutes.get("/me", [authMiddliware], getMeController);
 
 export default userRoutes;
+
+//?roleMiddleware([UserRoleEnum.ADMIN, UserRoleEnum.STUDENT])

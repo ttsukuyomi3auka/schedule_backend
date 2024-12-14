@@ -54,9 +54,6 @@ export class AuthServiceImpl implements AuthService {
     const { userId } = payload as ShortUserInfo;
 
     const user = await this.userRepository.findUserById(userId);
-    if (!user) {
-      throw new Error("Пользователь не найден");
-    }
     const newTokens = generateTokens(user);
     return newTokens.access;
   }

@@ -113,7 +113,7 @@ injected(
   DependencyKeys.scheduleRecordDataBaseConverter,
   DependencyKeys.scheduleEntryDataBaseConverter
 );
-injected(ScheduleServiceImpl, DependencyKeys.scheduleRepository);
+injected(ScheduleServiceImpl, DependencyKeys.scheduleRepository, DependencyKeys.userRepository);
 
 injected(GroupRepositoryImpl, DependencyKeys.groupDataBaseConverter);
 injected(DisciplineRepositoryImpl, DependencyKeys.disciplineDataBaseConverter);

@@ -12,8 +12,12 @@ export class ScheduleRepositoryImpl implements ScheduleRepository {
     private scheduleEntryDataBaseConverter: ScheduleEntryDataBaseConverter
   ) {}
 
-  findRecordsByGroupNumber(number: number): Promise<ScheduleRecordEntity[]> {
-    throw new Error("Method not implemented.");
+  async findRecordsByGroupNumber(number: number): Promise<ScheduleRecordEntity[]> {
+    const models = await ScheduleRecordModel.find({
+      "target.values": number.toString(),
+    });
+    if (!models) throw new Error("Не удалось найти записи");
+    return models.map((model) => this.scheduleRecordDataBaseConverter.toEntity(model));
   }
 
   async addScheduleEntry(entry: ScheduleEntryEntity): Promise<ScheduleEntryEntity> {

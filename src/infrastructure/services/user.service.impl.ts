@@ -7,9 +7,6 @@ export class UserServiceImpl implements UserService {
 
   async getMe(userId: string): Promise<UserEntity> {
     const user = await this.userRepository.findUserById(userId);
-    if (!user) {
-      throw new Error("Пользователь не найден");
-    }
     return user;
   }
 }

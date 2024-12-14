@@ -7,13 +7,13 @@ export const authMiddliware = async (req: Request, res: Response, next: NextFunc
     const token = authHeader && authHeader.split(" ")[1];
 
     if (!token) {
-      res.status(401).json({ message: "Нет токена авторизации!" });
+      res.status(401).send("Нет токена авторизации!");
       return;
     }
 
     const payload = await verifyToken(token);
     if (!payload) {
-      res.status(401).json({ message: "Токен не валиден!" });
+      res.status(401).send("Токен не валиден!");
       return;
     }
     console.log(payload);
@@ -21,7 +21,7 @@ export const authMiddliware = async (req: Request, res: Response, next: NextFunc
     next();
   } catch (error) {
     if (error instanceof Error) {
-      res.status(400).json({ message: error.message });
+      res.status(400).send(error.message);
       return;
     }
     res.status(500).send("Произошла ошибка на сервере.");
