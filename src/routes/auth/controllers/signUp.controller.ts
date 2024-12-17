@@ -5,8 +5,7 @@ const authService = container.get(DependencyKeys.authService);
 
 export const signUpController = async (req: Request, res: Response) => {
   try {
-    const { login, password } = req.body;
-    const newUser = await authService.signUp(login, password);
+    const newUser = await authService.signUp(req.body);
     if (!newUser) {
       res.status(400).send("Ошибка регистрации!");
       return;
