@@ -3,6 +3,7 @@ import { UserRoleEnum } from "../../core/entities/enums/userRole.enum";
 import { ScheduleEntryEntity } from "../../core/entities/scheduleEntry.entity";
 import { ScheduleRecordEntity } from "../../core/entities/scheduleRecord.entity";
 import { ScheduleRepository } from "../../core/repositories/schedule.repository";
+import { TeacherRepository } from "../../core/repositories/teacher.repository";
 import { UserRepository } from "../../core/repositories/user.repository";
 import { ScheduleService } from "../../core/services/shedule.service";
 
@@ -11,7 +12,8 @@ import { formatDate, getDayFromIndex, getTimeFromIndex } from "../../utils/forma
 export class ScheduleServiceImpl implements ScheduleService {
   constructor(
     private scheduleRepository: ScheduleRepository,
-    private userRepository: UserRepository
+    private userRepository: UserRepository,
+    private teacherRepository: TeacherRepository
   ) {}
 
   async getScheduleRecords(userId: string): Promise<ScheduleRecordEntity[]> {
@@ -36,6 +38,14 @@ export class ScheduleServiceImpl implements ScheduleService {
     if (records.length === 0) throw new Error("Нет расписания для данной группы");
     return records;
   }
+
+  async getScheduleRecordsByTeacherId(id: string): Promise<ScheduleRecordEntity[]> {
+    const teacher = await this.teacherRepository.findTeacherById(id);
+    const records = await this.scheduleRepository.findRecordsByTeacherFullName(teacher.fullName);
+    if (records.length === 0) throw new Error("Нет расписания для этого преподавателя");
+    return records;
+  }
+
   async createScheduleEntry(entry: CreateScheduleEntryDTO): Promise<boolean> {
     //? Создание ScheduleEntryEntity из DTO
     const scheduleEntry: ScheduleEntryEntity = {

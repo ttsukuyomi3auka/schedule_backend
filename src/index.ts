@@ -4,7 +4,6 @@ import { Enviroment } from "../enviroment";
 import appRouter from "./routes/appRouter";
 import cors from "cors";
 
-//TODO не забыть про корсы
 const app = express();
 app.use(json());
 app.use(cors());

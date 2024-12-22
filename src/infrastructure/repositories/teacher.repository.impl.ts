@@ -19,6 +19,12 @@ export class TeacherRepositoryImpl implements TeacherRepository {
     return entities;
   }
 
+  async findTeacherById(id: string): Promise<TeacherEntity> {
+    const model = await TeacherModel.findOne({ _id: id });
+    if (!model) throw new Error("Не удалось получить преподавателя");
+    return this.teacherDataBaseConverter.toEntity(model);
+  }
+
   async searchByMessage(message: string): Promise<TeacherEntity[]> {
     const models = await TeacherModel.find({
       fullName: { $regex: message, $options: "i" },
