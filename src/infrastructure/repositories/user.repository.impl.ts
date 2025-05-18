@@ -1,3 +1,6 @@
+import { ShortUserInfo } from "../../common/interfaces/shortUserInfo";
+import { UpdateUserDTO } from "../../core/entities/dtos/updateUser.dto";
+import { UserRoleEnum } from "../../core/entities/enums/userRole.enum";
 import { UserEntity } from "../../core/entities/user.entity";
 import { UserRepository } from "../../core/repositories/user.repository";
 import { UserDataBaseConverter } from "../converters/userDataBase.converter";
@@ -22,5 +25,43 @@ export class UserRepositoryImpl implements UserRepository {
   async add(user: UserEntity): Promise<void> {
     const newUser = new UserDataBaseModel(user);
     await newUser.save();
+  }
+
+  async updateUser(
+    findData: ShortUserInfo,
+    updateData: UpdateUserDTO
+  ): Promise<void> {
+    const user = await UserDataBaseModel.findOne({ _id: findData.userId });
+
+    if (!user) {
+      throw new Error("Пользователь не найден");
+    }
+
+    const allowedUpdates: Partial<UpdateUserDTO> = {};
+
+    if (updateData.fullName) {
+      allowedUpdates.fullName = updateData.fullName;
+    }
+
+    if (
+      user.role === UserRoleEnum.STUDENT &&
+      updateData.groupNumber !== undefined
+    ) {
+      allowedUpdates.groupNumber = updateData.groupNumber;
+    } else if (updateData.groupNumber !== undefined) {
+      throw new Error("Нельзя обновлять groupNumber для этой роли");
+    }
+    console.log(allowedUpdates);
+    if (Object.keys(allowedUpdates).length === 0) return;
+
+    const updatedUser = await UserDataBaseModel.findOneAndUpdate(
+      { _id: findData.userId },
+      { $set: allowedUpdates },
+      { new: true }
+    );
+
+    if (!updatedUser) {
+      throw new Error("Не удалось обновить данные");
+    }
   }
 }

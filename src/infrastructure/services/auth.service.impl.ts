@@ -6,12 +6,12 @@ import { JWTTokens } from "../../common/interfaces/jwt.interface";
 import { ShortUserInfo } from "../../common/interfaces/shortUserInfo";
 import { UserRepository } from "../../core/repositories/user.repository";
 import { AuthService } from "../../core/services/auth.service";
-import { SignUpDto } from "../../core/entities/dtos/signUp.dto";
+import { SignUpDTO } from "../../core/entities/dtos/signUp.dto";
 
 export class AuthServiceImpl implements AuthService {
   constructor(private userRepository: UserRepository) {}
 
-  async signUp(data: SignUpDto): Promise<boolean> {
+  async signUp(data: SignUpDTO): Promise<boolean> {
     const existingUser = await this.userRepository.findUserByLogin(data.login);
     if (existingUser) {
       throw new Error("Пользователь с таким логином уже существует");

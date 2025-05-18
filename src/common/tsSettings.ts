@@ -1,7 +1,9 @@
 import { ShortUserInfo } from "./interfaces/shortUserInfo";
 
-declare module "express-serve-static-core" {
-  interface Request {
-    user?: ShortUserInfo;
+declare global {
+  namespace Express {
+    interface Request {
+      user?: ShortUserInfo;
+    }
   }
 }
