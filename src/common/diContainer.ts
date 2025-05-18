@@ -102,8 +102,7 @@ container
   .inSingletonScope();
 container
   .bind(DependencyKeys.teacherDataBaseConverter)
-  .toInstance(TeacherDataBaseConverter)
-  .inSingletonScope();
+  .toInstance(TeacherDataBaseConverter).inSingletonScope()
 
 injected(AuthServiceImpl, DependencyKeys.userRepository);
 injected(UserRepositoryImpl, DependencyKeys.userDataBaseConverter);
@@ -131,4 +130,6 @@ injected(
   DependencyKeys.teacherRepository
 );
 
-//? сначала пишу все токены, потом классы которые их реализуют, после чего прописываю иньекции важно чтобы они были после билдов
+//? сначала пишу все токены, потом классы которые их реализуют, после чего прописываю иньекции важно чтобы они были после бидов
+
+//? как использовать: const authService = container.get(DependencyKeys.authService);
