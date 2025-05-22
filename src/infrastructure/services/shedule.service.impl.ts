@@ -7,7 +7,11 @@ import { TeacherRepository } from "../../core/repositories/teacher.repository";
 import { UserRepository } from "../../core/repositories/user.repository";
 import { ScheduleService } from "../../core/services/shedule.service";
 
-import { formatDate, getDayFromIndex, getTimeFromIndex } from "../../utils/format";
+import {
+  formatDate,
+  getDayFromIndex,
+  getTimeFromIndex,
+} from "../../utils/format";
 
 export class ScheduleServiceImpl implements ScheduleService {
   constructor(
@@ -21,10 +25,14 @@ export class ScheduleServiceImpl implements ScheduleService {
     const user = await this.userRepository.findUserById(userId);
     switch (user.role) {
       case UserRoleEnum.STUDENT:
-        records = await this.scheduleRepository.findRecordsByGroupNumber(user.groupNumber!);
+        records = await this.scheduleRepository.findRecordsByGroupNumber(
+          user.groupNumber!
+        );
         break;
       case UserRoleEnum.TEACHER:
-        records = await this.scheduleRepository.findRecordsByTeacherFullName(user.fullName);
+        records = await this.scheduleRepository.findRecordsByTeacherFullName(
+          user.fullName
+        );
         break;
 
       default:
@@ -33,16 +41,26 @@ export class ScheduleServiceImpl implements ScheduleService {
     return records;
   }
 
-  async getScheduleRecordsByGroupNumber(groupNumber: number): Promise<ScheduleRecordEntity[]> {
-    const records = await this.scheduleRepository.findRecordsByGroupNumber(groupNumber);
-    if (records.length === 0) throw new Error("Нет расписания для данной группы");
+  async getScheduleRecordsByGroupNumber(
+    groupNumber: number
+  ): Promise<ScheduleRecordEntity[]> {
+    const records = await this.scheduleRepository.findRecordsByGroupNumber(
+      groupNumber
+    );
+    if (records.length === 0)
+      throw new Error("Нет расписания для данной группы");
     return records;
   }
 
-  async getScheduleRecordsByTeacherId(id: string): Promise<ScheduleRecordEntity[]> {
+  async getScheduleRecordsByTeacherId(
+    id: string
+  ): Promise<ScheduleRecordEntity[]> {
     const teacher = await this.teacherRepository.findTeacherById(id);
-    const records = await this.scheduleRepository.findRecordsByTeacherFullName(teacher.fullName);
-    if (records.length === 0) throw new Error("Нет расписания для этого преподавателя");
+    const records = await this.scheduleRepository.findRecordsByTeacherFullName(
+      teacher.fullName
+    );
+    if (records.length === 0)
+      throw new Error("Нет расписания для этого преподавателя");
     return records;
   }
 
@@ -69,23 +87,30 @@ export class ScheduleServiceImpl implements ScheduleService {
 
     //? Проверка что все записи валидны
     for (const record of scheduleRecords) {
-      const exist = await this.scheduleRepository.findRecordByDateAndTime(record.date, record.time);
+      const exist = await this.scheduleRepository.findRecordByDateAndTime(
+        record.date,
+        record.time
+      );
       if (exist != null) {
         throw new Error(
-          `Место на ${getDayFromIndex(record.day)} ${formatDate(record.date)} - ${getTimeFromIndex(
-            record.time
-          )} уже занято`
+          `Место на ${getDayFromIndex(record.day)} ${formatDate(
+            record.date
+          )} - ${getTimeFromIndex(record.time)} уже занято`
         );
       }
     }
 
     //? Сохранение ScheduleEntry в базе
-    const savedEntry = await this.scheduleRepository.addScheduleEntry(scheduleEntry);
+    const savedEntry = await this.scheduleRepository.addScheduleEntry(
+      scheduleEntry
+    );
 
     //? Сохранение записей ScheduleRecord в базе
     for (const record of scheduleRecords) {
       record.scheduleEntryId = savedEntry.id;
-      const recordAdded = await this.scheduleRepository.addScheduleRecord(record);
+      const recordAdded = await this.scheduleRepository.addScheduleRecord(
+        record
+      );
       if (!recordAdded) {
         throw new Error("Не удалось сохранить запись занятия в базу данных");
       }
@@ -94,9 +119,13 @@ export class ScheduleServiceImpl implements ScheduleService {
     return true;
   }
 
-  private generateScheduleRecords(entry: ScheduleEntryEntity): ScheduleRecordEntity[] {
+  private generateScheduleRecords(
+    entry: ScheduleEntryEntity
+  ): ScheduleRecordEntity[] {
     const records: ScheduleRecordEntity[] = [];
-    const startDate = new Date(entry.periodStart.split(".").reverse().join("-"));
+    const startDate = new Date(
+      entry.periodStart.split(".").reverse().join("-")
+    );
     const endDate = new Date(entry.periodEnd.split(".").reverse().join("-"));
 
     let daysAndTime: Map<string, number[]>;
@@ -109,7 +138,11 @@ export class ScheduleServiceImpl implements ScheduleService {
     for (const [day, times] of daysAndTime.entries()) {
       const dayOfWeek = parseInt(day);
 
-      for (let date = new Date(startDate); date <= endDate; date.setDate(date.getDate() + 1)) {
+      for (
+        let date = new Date(startDate);
+        date <= endDate;
+        date.setDate(date.getDate() + 1)
+      ) {
         if (date.getDay() === dayOfWeek) {
           for (const time of times) {
             records.push({
@@ -131,5 +164,44 @@ export class ScheduleServiceImpl implements ScheduleService {
     }
 
     return records;
+  }
+
+  async updateScheduleEntry(dto: Partial<ScheduleEntryEntity>): Promise<void> {
+    if (!dto.id) throw new Error("ID группы не указан");
+
+    await this.scheduleRepository.updateScheduleEntry(dto);
+
+    const relatedRecords = await this.scheduleRepository.findRecordsByEntryId(
+      dto.id
+    );
+    if (!relatedRecords.length) return;
+
+    const scheduleRecords = await this.scheduleRepository.findRecordsByEntryId(
+      dto.id!
+    );
+    const updatedRecords = scheduleRecords.map((r) => {
+      return {
+        id: r.id,
+        target: dto.target,
+        discipline: dto.discipline,
+        teachers: dto.teachers,
+        lessonType: dto.lessonType,
+        date: r.date,
+        day: r.day,
+        time: r.time,
+        lessonFormat: dto.lessonFormat,
+        room: dto.room,
+        scheduleEntryId: dto.id,
+      };
+    });
+    const updatePromises = updatedRecords.map((record) =>
+      this.scheduleRepository.updateScheduleRecord(record)
+    );
+    await Promise.all(updatePromises);
+  }
+  async updateScheduleRecord(
+    dto: Partial<ScheduleRecordEntity>
+  ): Promise<void> {
+    await this.scheduleRepository.updateScheduleRecord(dto);
   }
 }

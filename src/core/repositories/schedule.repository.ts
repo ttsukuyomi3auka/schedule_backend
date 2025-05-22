@@ -5,6 +5,14 @@ export interface ScheduleRepository {
   addScheduleEntry(entry: ScheduleEntryEntity): Promise<ScheduleEntryEntity>;
   addScheduleRecord(record: ScheduleRecordEntity): Promise<boolean>;
   findRecordsByGroupNumber(number: number): Promise<ScheduleRecordEntity[]>;
-  findRecordByDateAndTime(date: string, time: number): Promise<ScheduleRecordEntity | null>;
-  findRecordsByTeacherFullName(fullName: string): Promise<ScheduleRecordEntity[]>;
+  findRecordByDateAndTime(
+    date: string,
+    time: number
+  ): Promise<ScheduleRecordEntity | null>;
+  findRecordsByTeacherFullName(
+    fullName: string
+  ): Promise<ScheduleRecordEntity[]>;
+  findRecordsByEntryId(id: string): Promise<ScheduleRecordEntity[]>;
+  updateScheduleEntry(dto: Partial<ScheduleEntryEntity>): Promise<void>;
+  updateScheduleRecord(dto: Partial<ScheduleRecordEntity>): Promise<void>;
 }

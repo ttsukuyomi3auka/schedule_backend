@@ -2,11 +2,18 @@ import { Request, Response } from "express";
 import { container, DependencyKeys } from "../../../common/diContainer";
 import { InformationService } from "../../../core/services/information.service";
 
-const informationService: InformationService = container.get(DependencyKeys.informationService);
+const informationService: InformationService = container.get(
+  DependencyKeys.informationService
+);
 
-export const searchDisciplineByMessageController = async (req: Request, res: Response) => {
+export const searchDisciplineByMessageController = async (
+  req: Request,
+  res: Response
+) => {
   try {
-    const disciplines = await informationService.searchDisciplineByMessage(req.body.message);
+    const disciplines = await informationService.searchDisciplineByMessage(
+      req.body.message
+    );
     res.status(200).json(disciplines);
   } catch (error) {
     error instanceof Error
