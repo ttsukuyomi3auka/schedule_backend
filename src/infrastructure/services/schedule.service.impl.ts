@@ -5,7 +5,7 @@ import { ScheduleRecordEntity } from "../../core/entities/scheduleRecord.entity"
 import { ScheduleRepository } from "../../core/repositories/schedule.repository";
 import { TeacherRepository } from "../../core/repositories/teacher.repository";
 import { UserRepository } from "../../core/repositories/user.repository";
-import { ScheduleService } from "../../core/services/shedule.service";
+import { ScheduleService } from "../../core/services/schedule.service";
 
 import {
   formatDate,
@@ -166,19 +166,32 @@ export class ScheduleServiceImpl implements ScheduleService {
     return records;
   }
 
-  async updateScheduleEntry(dto: Partial<ScheduleEntryEntity>): Promise<void> {
-    if (!dto.id) throw new Error("ID группы не указан");
-
-    await this.scheduleRepository.updateScheduleEntry(dto);
-
-    const relatedRecords = await this.scheduleRepository.findRecordsByEntryId(
-      dto.id
+  async updateScheduleEntry(dto: Partial<ScheduleRecordEntity>): Promise<void> {
+    //? обновление группы записей
+    if (!dto.scheduleEntryId) throw new Error("ID группы не указан");
+    const scheduleEntry = await this.scheduleRepository.findRecordEntryById(
+      dto.scheduleEntryId
     );
-    if (!relatedRecords.length) return;
+    const updateEntryData: ScheduleEntryEntity = {
+      id: dto.scheduleEntryId,
+      target: dto.target ?? scheduleEntry.target,
+      discipline: dto.discipline ?? scheduleEntry.discipline,
+      teachers: dto.teachers ?? scheduleEntry.teachers,
+      lessonType: dto.lessonType ?? scheduleEntry.lessonType,
+      daysAndTime: scheduleEntry.daysAndTime,
+      periodStart: scheduleEntry.periodStart,
+      periodEnd: scheduleEntry.periodEnd,
+      lessonFormat: dto.lessonFormat ?? scheduleEntry.lessonFormat,
+      room: dto.room ?? scheduleEntry.room,
+    };
+    await this.scheduleRepository.updateScheduleEntry(updateEntryData);
 
+    //? обновление всех записей в этой группе
     const scheduleRecords = await this.scheduleRepository.findRecordsByEntryId(
-      dto.id!
+      dto.scheduleEntryId
     );
+    if (!scheduleRecords.length) return;
+
     const updatedRecords = scheduleRecords.map((r) => {
       return {
         id: r.id,

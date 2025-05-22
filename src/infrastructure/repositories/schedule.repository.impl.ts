@@ -59,6 +59,12 @@ export class ScheduleRepositoryImpl implements ScheduleRepository {
     return true;
   }
 
+  async findRecordEntryById(id: string): Promise<ScheduleEntryEntity> {
+    const model = await ScheduleEntryModel.findById(id);
+    if (!model) throw new Error("Запись не найдена");
+    return this.scheduleEntryDataBaseConverter.toEntity(model);
+  }
+
   async findRecordByDateAndTime(
     date: string,
     time: number
@@ -78,7 +84,7 @@ export class ScheduleRepositoryImpl implements ScheduleRepository {
     );
   }
 
-  async updateScheduleEntry(dto: Partial<ScheduleEntryEntity>): Promise<void> {
+  async updateScheduleEntry(dto: Partial<ScheduleRecordEntity>): Promise<void> {
     const update = await ScheduleEntryModel.findByIdAndUpdate(
       { _id: dto.id },
       { ...dto },
@@ -86,7 +92,9 @@ export class ScheduleRepositoryImpl implements ScheduleRepository {
     );
     if (!update) throw new Error("Не удалось обновить запись");
   }
-  async updateScheduleRecord(dto: Partial<ScheduleRecordEntity>): Promise<void> {
+  async updateScheduleRecord(
+    dto: Partial<ScheduleRecordEntity>
+  ): Promise<void> {
     const update = await ScheduleRecordModel.findByIdAndUpdate(
       { _id: dto.id },
       { ...dto },

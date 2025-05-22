@@ -1,6 +1,6 @@
 import { Request, Response } from "express";
 import { container, DependencyKeys } from "../../../common/diContainer";
-import { ScheduleService } from "../../../core/services/shedule.service";
+import { ScheduleService } from "../../../core/services/schedule.service";
 
 const scheduleService: ScheduleService = container.get(
   DependencyKeys.scheduleService

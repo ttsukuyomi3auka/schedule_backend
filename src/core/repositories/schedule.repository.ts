@@ -4,6 +4,7 @@ import { ScheduleRecordEntity } from "../entities/scheduleRecord.entity";
 export interface ScheduleRepository {
   addScheduleEntry(entry: ScheduleEntryEntity): Promise<ScheduleEntryEntity>;
   addScheduleRecord(record: ScheduleRecordEntity): Promise<boolean>;
+  findRecordEntryById(id: string): Promise<ScheduleEntryEntity>;
   findRecordsByGroupNumber(number: number): Promise<ScheduleRecordEntity[]>;
   findRecordByDateAndTime(
     date: string,
@@ -13,6 +14,6 @@ export interface ScheduleRepository {
     fullName: string
   ): Promise<ScheduleRecordEntity[]>;
   findRecordsByEntryId(id: string): Promise<ScheduleRecordEntity[]>;
-  updateScheduleEntry(dto: Partial<ScheduleEntryEntity>): Promise<void>;
+  updateScheduleEntry(dto: Partial<ScheduleRecordEntity>): Promise<void>;
   updateScheduleRecord(dto: Partial<ScheduleRecordEntity>): Promise<void>;
 }

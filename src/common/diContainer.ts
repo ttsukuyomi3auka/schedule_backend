@@ -3,14 +3,14 @@ import { UserDataBaseConverter } from "../infrastructure/converters/userDataBase
 import { UserServiceImpl } from "../infrastructure/services/user.service.impl";
 import { UserRepositoryImpl } from "../infrastructure/repositories/user.repository.impl";
 import { AuthServiceImpl } from "../infrastructure/services/auth.service.impl";
-import { ScheduleServiceImpl } from "../infrastructure/services/shedule.service.impl";
+import { ScheduleServiceImpl } from "../infrastructure/services/schedule.service.impl";
 import { ScheduleRepository } from "../core/repositories/schedule.repository";
 import { ScheduleRepositoryImpl } from "../infrastructure/repositories/schedule.repository.impl";
 import { ScheduleEntryDataBaseConverter } from "../infrastructure/converters/scheduleEntryDataBase.converter";
 import { ScheduleRecordDataBaseConverter } from "../infrastructure/converters/scheduleRecordDataBase.converter";
 import { UserRepository } from "../core/repositories/user.repository";
 import { AuthService } from "../core/services/auth.service";
-import { ScheduleService } from "../core/services/shedule.service";
+import { ScheduleService } from "../core/services/schedule.service";
 import { UserService } from "../core/services/user.service";
 import { GroupRepository } from "../core/repositories/group.repository";
 import { GroupRepositoryImpl } from "../infrastructure/repositories/group.respository.impl";

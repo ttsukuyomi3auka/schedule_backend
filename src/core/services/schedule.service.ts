@@ -1,5 +1,4 @@
 import { CreateScheduleEntryDTO } from "../entities/dtos/createScheduleEntry.dto";
-import { ScheduleEntryEntity } from "../entities/scheduleEntry.entity";
 import { ScheduleRecordEntity } from "../entities/scheduleRecord.entity";
 
 export interface ScheduleService {
@@ -9,6 +8,6 @@ export interface ScheduleService {
   ): Promise<ScheduleRecordEntity[]>;
   getScheduleRecordsByTeacherId(id: string): Promise<ScheduleRecordEntity[]>;
   createScheduleEntry(entry: CreateScheduleEntryDTO): Promise<boolean>;
-  updateScheduleEntry(dto: Partial<ScheduleEntryEntity>): Promise<void>;
+  updateScheduleEntry(dto: Partial<ScheduleRecordEntity>): Promise<void>;
   updateScheduleRecord(dto: Partial<ScheduleRecordEntity>): Promise<void>;
 }
