@@ -102,4 +102,19 @@ export class ScheduleRepositoryImpl implements ScheduleRepository {
     );
     if (!update) throw new Error("Не удалось обновить запись");
   }
+
+  async deleteScheduleRecord(id: string): Promise<void> {
+    const result = await ScheduleRecordModel.findByIdAndDelete(id);
+    if (!result) throw new Error("Не удалось удалить запись");
+  }
+  async deleteScheduleRecordByEntryId(id: string): Promise<void> {
+    const result = await ScheduleRecordModel.deleteMany({
+      scheduleEntryId: id,
+    });
+    if (!result) throw new Error("Не удалось удалить записи");
+  }
+  async deleteScheduleEntry(id: string): Promise<void> {
+    const result = await ScheduleEntryModel.findByIdAndDelete(id);
+    if (!result) throw new Error("Не удалось удалить запись");
+  }
 }

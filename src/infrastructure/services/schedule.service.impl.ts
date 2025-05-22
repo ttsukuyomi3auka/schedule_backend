@@ -217,4 +217,12 @@ export class ScheduleServiceImpl implements ScheduleService {
   ): Promise<void> {
     await this.scheduleRepository.updateScheduleRecord(dto);
   }
+
+  async deleteScheduleRecord(id: string): Promise<void> {
+    await this.scheduleRepository.deleteScheduleRecord(id);
+  }
+  async deleteScheduleEntry(id: string): Promise<void> {
+    await this.scheduleRepository.deleteScheduleRecordByEntryId(id);
+    await this.scheduleRepository.deleteScheduleEntry(id);
+  }
 }
