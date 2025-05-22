@@ -204,7 +204,7 @@ export class ScheduleServiceImpl implements ScheduleService {
         time: r.time,
         lessonFormat: dto.lessonFormat,
         room: dto.room,
-        scheduleEntryId: dto.id,
+        scheduleEntryId: dto.scheduleEntryId,
       };
     });
     const updatePromises = updatedRecords.map((record) =>
