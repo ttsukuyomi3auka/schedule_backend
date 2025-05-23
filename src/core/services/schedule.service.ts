@@ -1,8 +1,11 @@
 import { CreateScheduleEntryDTO } from "../entities/dtos/createScheduleEntry.dto";
+import { CreateScheduleRecordDTO } from "../entities/dtos/createScheduleRecord.dto";
 import { ScheduleRecordEntity } from "../entities/scheduleRecord.entity";
 
 export interface ScheduleService {
   createScheduleEntry(entry: CreateScheduleEntryDTO): Promise<boolean>;
+  createScheduleRecord(record: CreateScheduleRecordDTO): Promise<boolean>;
+  
   getScheduleRecords(userId: string): Promise<ScheduleRecordEntity[]>;
   getScheduleRecordsByGroupNumber(
     groupNumber: number

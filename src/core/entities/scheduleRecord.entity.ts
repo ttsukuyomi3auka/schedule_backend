@@ -1,8 +1,6 @@
-import { DisciplineEntity } from "./discipline.entity";
 import { LessonFormatEnum } from "./enums/lessonFormat.enum";
 import { LessonTypeEnum } from "./enums/lessonType.enum";
 import { TargetEntity } from "./target.entity";
-import { TeacherEntity } from "./teacher.entity";
 
 export interface ScheduleRecordEntity {
   id: string; // Уникальный идентификатор записи

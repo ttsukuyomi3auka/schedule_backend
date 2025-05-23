@@ -46,7 +46,7 @@ const scheduleRecordSchema = new Schema<IScheduleRecordModel>({
     required: true,
   },
   room: { type: String, required: true },
-  scheduleEntryId: { type: String, required: true },
+  scheduleEntryId: { type: String, default: "" },
 });
 
 export const ScheduleRecordModel = model<IScheduleRecordModel>(

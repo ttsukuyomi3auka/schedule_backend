@@ -1,4 +1,5 @@
 import { CreateScheduleEntryDTO } from "../../core/entities/dtos/createScheduleEntry.dto";
+import { CreateScheduleRecordDTO } from "../../core/entities/dtos/createScheduleRecord.dto";
 import { UserRoleEnum } from "../../core/entities/enums/userRole.enum";
 import { ScheduleEntryEntity } from "../../core/entities/scheduleEntry.entity";
 import { ScheduleRecordEntity } from "../../core/entities/scheduleRecord.entity";
@@ -62,6 +63,16 @@ export class ScheduleServiceImpl implements ScheduleService {
     if (records.length === 0)
       throw new Error("Нет расписания для этого преподавателя");
     return records;
+  }
+
+  async createScheduleRecord(
+    record: CreateScheduleRecordDTO
+  ): Promise<boolean> {
+    return await this.scheduleRepository.addScheduleRecord({
+      ...record,
+      id: "",
+      scheduleEntryId: "",
+    });
   }
 
   async createScheduleEntry(entry: CreateScheduleEntryDTO): Promise<boolean> {

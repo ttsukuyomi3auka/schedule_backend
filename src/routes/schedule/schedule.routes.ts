@@ -9,10 +9,12 @@ import { updateScheduleRecordController } from "./controllers/updateScheduleReco
 import { getScheduleEntryController } from "./controllers/getScheduleEntry.controller";
 import { deleteScheduleRecordController } from "./controllers/deleteScheduleRecord.controller";
 import { deleteScheduleEntryController } from "./controllers/deleteScheduleEntry.controller";
+import { createScheduleRecordController } from "./controllers/createScheduleRecord.controller";
 
 const scheduleRoutes = Router();
 
 scheduleRoutes.post("/create", createScheduleController);
+scheduleRoutes.post("/createRecord", createScheduleRecordController);
 scheduleRoutes.get(
   "/records/group/:number",
   getScheduleRecordsByGroupNumberController
