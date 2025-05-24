@@ -14,3 +14,4 @@ export interface ScheduleEntryEntity {
   lessonFormat: LessonFormatEnum;
   room: string; // Аудитория или ссылка на ресурс
 }
+

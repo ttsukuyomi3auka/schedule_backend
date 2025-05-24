@@ -6,7 +6,6 @@ import { authMiddliware } from "../../common/middliware/auth.middleware";
 import { getScheduleRecordsByTeacherIdController } from "./controllers/getSchedulerRecordsByTeacherId.controller";
 import { updateScheduleEntryController } from "./controllers/updateScheduleEntry.controller";
 import { updateScheduleRecordController } from "./controllers/updateScheduleRecord.controller";
-import { getScheduleEntryController } from "./controllers/getScheduleEntry.controller";
 import { deleteScheduleRecordController } from "./controllers/deleteScheduleRecord.controller";
 import { deleteScheduleEntryController } from "./controllers/deleteScheduleEntry.controller";
 import { createScheduleRecordController } from "./controllers/createScheduleRecord.controller";
@@ -26,7 +25,6 @@ scheduleRoutes.get(
 scheduleRoutes.get("/records", [authMiddliware], getScheduleRecordsController);
 scheduleRoutes.post("/updateEntry", updateScheduleEntryController);
 scheduleRoutes.post("/updateRecord", updateScheduleRecordController);
-scheduleRoutes.post("/get", getScheduleEntryController);
 scheduleRoutes.get("/deleteRecord/:id", deleteScheduleRecordController);
 scheduleRoutes.get("/deleteEntry/:id", deleteScheduleEntryController);
 

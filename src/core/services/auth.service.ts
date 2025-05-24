@@ -6,3 +6,5 @@ export interface AuthService {
   signIn(login: string, password: string): Promise<JWTTokens>;
   refresh(refreshToken: string): Promise<string>;
 }
+
+

@@ -23,3 +23,4 @@ export interface ScheduleRepository {
   deleteScheduleRecordByEntryId(id: string): Promise<void>;
   deleteScheduleEntry(id: string): Promise<void>;
 }
+

@@ -47,3 +47,5 @@ const scheduleEntrySchema = new Schema<IScheduleEntryModel>({
 });
 
 export const ScheduleEntryModel = model<IScheduleEntryModel>("ScheduleEntry", scheduleEntrySchema);
+
+

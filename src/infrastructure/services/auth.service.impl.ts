@@ -16,9 +16,7 @@ export class AuthServiceImpl implements AuthService {
     if (existingUser) {
       throw new Error("Пользователь с таким логином уже существует");
     }
-
     const hashedPassword = hashSync(data.password, 10);
-
     const newUser: UserEntity = {
       userId: "",
       fullName: data.fullName ?? "",
@@ -60,3 +58,5 @@ export class AuthServiceImpl implements AuthService {
     return newTokens.access;
   }
 }
+
+

@@ -51,6 +51,7 @@ export const DependencyKeys = {
   teacherRepository: token<TeacherRepository>("teacherRepository"),
   teacherDataBaseConverter: token<TeacherDataBaseConverter>("teacherDataBaseConverter"),
 };
+
 export const container = new Container();
 
 container
